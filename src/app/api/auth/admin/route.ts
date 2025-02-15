@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid Credentials" }, { status: 401 });
   }
 
-  const tokens = await generateTokens(admin.id, admin);
+  const tokens = await generateTokens<Admin>(admin.id, admin);
   const result = {
     tokens: {
         accessToken: tokens.accessToken,
