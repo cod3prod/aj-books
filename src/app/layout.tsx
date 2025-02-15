@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import "@/styles/index.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import ReduxProvider from "@/components/redux-provider";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Alji Books",
@@ -27,10 +29,13 @@ export default function RootLayout({
   return (
     <html lang="ko" className={notoSansKR.className}>
       <body>
-        <Header />
-        {children}
-        <Footer />
-        </body>
+        <ReduxProvider>
+          <Header />
+          {children}
+          <Footer />
+          <ToastContainer position="top-left" />
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

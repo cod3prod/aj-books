@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h5 className="text-white font-bold text-lg">Novelty</h5>
+            <h5 className="text-white font-bold text-lg">AJ Books</h5>
             <p className="text-sm">Discover the world through pages</p>
             <div className="flex space-x-4">
               {["facebook", "twitter", "instagram"].map((social) => (
@@ -50,8 +50,8 @@ export default function Footer() {
 
         <div className="border-t border-slate-700 mt-8 pt-8 text-center text-sm">
           <p>
-            &copy; 2024 Novelty. All rights reserved. Crafted with{" "}
-            <span className="text-rose-500">♥</span>
+            &copy; {new Date().getFullYear()} AJ Books. All rights reserved.
+            Crafted with <span className="text-rose-500">♥</span>
           </p>
         </div>
       </div>

@@ -1,11 +1,13 @@
+"use client";
+
 import Books from "./_components/books";
 import Hero from "./_components/hero";
 
-export default function Page() {
+export default function HomePage() {
   return (
-    <article>
+    <main>
         <Hero />
         <Books />
-    </article>
+    </main>
   )
 }
