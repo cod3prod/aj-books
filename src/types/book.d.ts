@@ -12,6 +12,8 @@ type Book = {
 // redux slice
 type BookState = {
   books: Book[];
+  title: string;
+  author: string;
   currentPage: number;
   totalPages: number;
   totalItems: number;

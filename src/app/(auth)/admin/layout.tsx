@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import SoftCircleScales from "./_components/soft-circle-scales";
 
 export const metadata: Metadata = {
-  title: "Alji Books",
+  title: "Admin",
   description: "Book Store Application",
   icons: {
     icon: "/favicon.ico",

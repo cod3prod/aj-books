@@ -1,58 +1,144 @@
 "use client";
 
-export default function BookDetailPage() {
+import NotAuthenticated from "@/components/ui/not-authenticated";
+import { useFetch } from "@/hooks/use-fetch";
+import { useRefresh } from "@/hooks/use-refresh";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+export default function BookEditPage() {
+  const { tokens } = useSelector((state: RootState) => state.auth);
+  const { id } = useParams();
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_DOMAIN_URL || "http://localhost:3000";
+  const url = `${BASE_URL}/api/books/${id}`;
+  const { data, fetchData } = useFetch<Book>();
+  const { fetchData: fetchDataWithAuth } = useRefresh<Book>();
+  const router = useRouter();
+
+  const [title, setTitle] = useState<string>("");
+  const [img_url, setImgUrl] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
+  const [amount, setAmount] = useState(0);
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    fetchData(url);
+  }, []);
+
+  useEffect(() => {
+    // console.log(data);
+    if (data) {
+      setTitle(data.title);
+      setImgUrl(data.img_url);
+      setAuthor(data.author);
+      setAmount(data.amount);
+      setPrice(data.price);
+    }
+  }, [data]);
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = (await fetchDataWithAuth(
+      url,
+      "PUT",
+      JSON.stringify({ title, img_url, author, amount, price })
+    )) as Book;
+
+    if (result) {
+      router.push(`${BASE_URL}/detail/${id}`);
+    }
+  };
+
+  if (!tokens) return <NotAuthenticated />;
+
   return (
-    <article className="py-16 bg-slate-50 min-h-screen">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* 이미지 섹션 */}
-          <div className="relative h-96 bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-            <img
-              src="https://via.placeholder.com/400x500"
-              alt="Book Cover"
-              className="w-full h-full object-contain"
-            />
-            <div className="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full text-sm">
-              25,000원
-            </div>
-          </div>
+    <article className="mt-16 py-16 bg-slate-50 min-h-screen">
+      <div className="container mx-auto px-6 max-w-2xl">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+            Edit Book
+          </h2>
 
-          {/* 상세 정보 섹션 */}
-          <div className="p-8 space-y-6">
-            <div className="flex justify-between items-start">
+          <form onSubmit={handleUpdate} className="space-y-6">
+            <div className="space-y-4">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Book Title</h1>
-                <p className="text-xl text-slate-600 mb-4">Author Name</p>
-              </div>
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                재고: 15
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 text-slate-600">
-              <div>
-                <p className="font-medium">출판사</p>
-                <p>Publisher Name</p>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  제목
+                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                />
               </div>
               <div>
-                <p className="font-medium">장르</p>
-                <p>Fiction</p>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  이미지
+                </label>
+                <input
+                  type="text"
+                  value={img_url}
+                  onChange={(e) => setImgUrl(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  작가
+                </label>
+                <input
+                  type="text"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    재고
+                  </label>
+                  <input
+                    type="text"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    가격
+                  </label>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
               </div>
             </div>
 
-            <p className="text-slate-600 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-
-            <div className="flex gap-4 pt-6 border-t border-slate-200">
-              <button className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-colors">
-                수정하기
+            <div className="flex gap-4 pt-6">
+              <button
+                type="submit"
+                className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-colors cursor-pointer"
+              >
+                Save Changes
               </button>
-              <button className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white rounded-full transition-colors">
-                삭제하기
-              </button>
+              <Link
+                href={`${BASE_URL}/detail/${id}`}
+                className="text-center flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-full transition-colors cursor-pointer"
+              >
+                Cancel
+              </Link>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </article>

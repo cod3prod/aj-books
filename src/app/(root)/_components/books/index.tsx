@@ -15,12 +15,12 @@ export default function Books() {
 
   useEffect(() => {
     if (books.length === 0) {
-      dispatch(fetchBooksData(1));
+      dispatch(fetchBooksData({page: 1}));
     }
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchBooksData(currentPage));
+    dispatch(fetchBooksData({page: currentPage}));
   }, [currentPage, dispatch]);
 
   useEffect(() => {

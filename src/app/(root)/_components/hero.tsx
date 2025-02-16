@@ -1,7 +1,23 @@
+import { fetchBooksData, setAuthor, setTitle } from "@/store/slices/book-slice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Hero() {
   const [searchType, setSearchType] = useState("title");
+  const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSearch = () => {
+    if (searchType === "title") {
+      dispatch(setTitle(searchQuery));
+      dispatch(setAuthor(null));
+      dispatch(fetchBooksData({ page: 1, title: searchQuery }));
+    } else if (searchType === "author") {
+      dispatch(setTitle(null));
+      dispatch(setAuthor(searchQuery));
+      dispatch(fetchBooksData({ page: 1, author: searchQuery }));
+    }
+  };
 
   return (
     <section className="relative mt-16 py-24 bg-gradient-to-r from-slate-900 to-blue-800 text-white overflow-hidden">
@@ -41,6 +57,8 @@ export default function Hero() {
               </select>
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={
                   searchType === "title"
                     ? "책 제목을 입력하세요"
@@ -49,7 +67,10 @@ export default function Hero() {
                 className="w-full pl-4 pr-32 py-4 bg-transparent focus:outline-none placeholder:text-slate-200"
               />
             </div>
-            <button className="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300">
+            <button
+              onClick={handleSearch}
+              className="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
+            >
               Search
             </button>
           </div>

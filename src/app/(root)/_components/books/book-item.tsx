@@ -34,7 +34,7 @@ export default function BookItem({ book }: { book: Book }) {
         <p className="text-slate-600 text-sm mb-4">{author}</p>
         <div className="flex justify-between items-center">
           <Link
-            href={`/books/${id}`}
+            href={`/detail/${id}`}
             className="bg-blue-600 hover:bg-blue-400 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 cursor-pointer"
           >
             자세히
