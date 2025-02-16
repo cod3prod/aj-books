@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaGithub, FaEnvelope, FaBriefcase } from "react-icons/fa";
+import { FaGithub, FaEnvelope } from "react-icons/fa";
 
 export default function Footer() {
   return (
