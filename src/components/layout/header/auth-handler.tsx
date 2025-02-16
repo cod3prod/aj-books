@@ -21,7 +21,7 @@ export default function AuthHandler() {
       {user ? (
         <button
           className={
-            "w-36 flex justify-center items-center bg-gray-100 text-gray-900 hover:text-white px-6 py-2 rounded-full hover:bg-red-500 font-semibold transition-all"
+            "w-36 flex justify-center items-center bg-gray-100 text-gray-900 hover:text-white px-6 py-2 rounded-full hover:bg-red-500 font-semibold transition-all cursor-pointer"
           }
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -32,9 +32,9 @@ export default function AuthHandler() {
       ) : (
         <Link
           href={"/admin"}
-          className="w-36 flex justify-center items-center bg-blue-400 text-white px-6 py-2 rounded-full hover:bg-blue-300 font-semibold transition-all"
+          className="w-36 flex justify-center items-center bg-blue-400 text-white px-6 py-2 rounded-full hover:bg-blue-300 font-semibold transition-all cursor-pointer"
         >
-            Admin
+            Login
         </Link>
       )}
     </>

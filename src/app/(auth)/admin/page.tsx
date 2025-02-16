@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { LuLockKeyhole } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { LuLockKeyholeOpen } from "react-icons/lu";
+import { useDispatch } from "react-redux";
+import { setTokens, setUser } from "@/store/slices/auth-slice";
 
 export default function Page() {
   const BASE_URL =
@@ -15,6 +17,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
@@ -25,8 +28,10 @@ export default function Page() {
   useEffect(() => {
     if (data) {
       console.log(data);
-      localStorage.setItem("tokens", JSON.stringify(data.tokens));
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // localStorage.setItem("tokens", JSON.stringify(data.tokens));
+      // localStorage.setItem("user", JSON.stringify(data.user));
+      dispatch(setTokens(data.tokens));
+      dispatch(setUser(data.user));
       router.push("/");
     }
   }, [data, router]);
