@@ -1,37 +1,95 @@
+# [AJ BOOKS]
 
-# [프로젝트 이름]  
-**실험적 학습을 위한 토이 프로젝트**  
-*(ex. "신기술 검증", "아키텍처 탐구", "알고리즘 최적화 테스트")*
+**Prisma를 활용한 온라인 서점 웹 애플리케이션**
 
 ## 🎯 **Project Purpose**  
-- **핵심 목표**: [기술/도구]의 동작 원리 파악, [문제]에 대한 최소 기능 구현  
-  *(ex. "WebGL 렌더링 프로세스 이해", "서버리스 함수의 Cold Start 시간 측정")*  
-- **실험 범위**: [구체적 기술 스택 or 방법론]  
-  *(ex. "Vanilla JS만 사용", "Zero-Dependency 환경 구성")*  
+  DEMO : https://aj-books.vercel.app/  
+  TEST PASSWORD : test123
 
-## 🔨 **Tech Stack**  
-- **주력 기술**: React 18, TypeScript 5.0  
-- **측정/분석 도구**: Lighthouse, Chrome DevTools  
+- **핵심 목표**: Next.js 15 기반 풀 스택 애플리케이션 구축
 
-## 📝 **Key Learnings**  
-- [기술명]의 [특정 동작] 확인 → [인사이트]  
-  *(ex. "useEffect 클린업 함수의 비동기 처리 한계 발견")*  
-- [문제] 발생 → [해결 시도] → [결과]  
+## 🔨 **Tech Stack**
 
-## ⚙️ **Setup**  
-```bash
-# 의존성 최소화 (package.json 직접 구성 권장)
-npm init -y
-npm install
+- **주요 기술**: Next.js 15, TypeScript, Redux, Prisma
+- **데이터베이스 및 배포**: MongoDB Atlas, Vercel
+
+## 📝 **Key Point**
+
+- API Route를 사용하여 RESTful API 구현
+- 책 목록 페이지 구현  
+  redux-thunk를 사용
+
+```typescript
+// store/slices/book-slice.ts
+// ...
+export const fetchBooksData = createAsyncThunk(
+  "book/fetchBooksData",
+  async ({ page, title, author }: FetchBooksParams) => {
+    try {
+      const url = new URL(`${BASE_URL}/api/books`);
+      url.searchParams.append("page", String(page));
+      if (title) url.searchParams.append("title", title);
+      if (author) url.searchParams.append("author", author);
+
+      const response = await fetch(url.toString());
+      const data: BookListResponse = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching books data:", error);
+      throw error;
+    }
+  }
+);
 ```
 
-## 📈 **Usage**  
-```js
-// 핵심 로직 실행 (학습 포인트 주석 처리)
-experiment({ 
-  target: "WebSocket Latency", 
-  iterations: 1000 
-});
-```
-- **테스트 케이스**: `src/test` 디렉토리 참고  
+- 페이지네이션 및 필터링  
+  쿼리스트링
 
+```typescript
+// @/app/api/books/route.ts
+// ...
+const { searchParams } = new URL(request.url);
+const page = Number(searchParams.get("page")) || 1;
+const limit = 10;
+const skip = (page - 1) * limit;
+
+// title과 author 필터값 가져오기
+const titleFilter = searchParams.get("title");
+const authorFilter = searchParams.get("author");
+```
+- 도세 상세 페이지 구현
+- JWT 기반 도서 정보 CRUD 권한 보호
+
+- 커스텀 훅과 refreshToken을 활용한 토큰 갱신
+
+```typescript
+// @/hooks/use-refresh.ts
+// ...
+const refreshToken = async (): Promise<AuthResponse | null> => {
+  try {
+    if (!tokens?.refreshToken) {
+      throw new Error("No refresh token available");
+    }
+
+    const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken: tokens.refreshToken }),
+    });
+
+    if (!response.ok) {
+      localStorage.removeItem("tokens");
+      localStorage.removeItem("user");
+      throw new Error("Failed to refresh token");
+    }
+    const result = (await response.json()) as AuthResponse;
+    dispatch(setTokens(result.tokens));
+    dispatch(setUser(result.user));
+    console.log("refreshed tokens:", result.user.username, result.tokens);
+    return result;
+  } catch (error) {
+    console.error("Token refresh failed:", error);
+    return null;
+  }
+};
+```
