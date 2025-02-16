@@ -17,7 +17,7 @@ export default function BookDetailPage() {
 
   useEffect(() => {
     fetchData(url);
-  }, []);
+  }, [fetchData, url]);
 
   const handleDelete = async () => {
     await fetchDataWithAuth(url, "DELETE");

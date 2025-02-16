@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     });
     isValid = await comparePassword(password, admin.password);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

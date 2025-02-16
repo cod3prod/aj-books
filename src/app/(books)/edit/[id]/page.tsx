@@ -26,7 +26,7 @@ export default function BookEditPage() {
 
   useEffect(() => {
     fetchData(url);
-  }, []);
+  }, [fetchData, url]);
 
   useEffect(() => {
     // console.log(data);
@@ -37,7 +37,7 @@ export default function BookEditPage() {
       setAmount(data.amount);
       setPrice(data.price);
     }
-  }, [data]);
+  }, [data, setTitle, setImgUrl, setAuthor, setAmount, setPrice]);
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

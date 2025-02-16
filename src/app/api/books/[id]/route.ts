@@ -15,6 +15,7 @@ export async function GET(
       ? NextResponse.json(book)
       : NextResponse.json({ error: "Not Found" }, { status: 404 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
   }
 }
@@ -45,6 +46,7 @@ export async function PUT(
     });
     return NextResponse.json(updatedBook);
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Update failed" }, { status: 400 });
   }
 }
@@ -72,6 +74,7 @@ export async function DELETE(
     await prisma.book.delete({ where: { id } });
     return new NextResponse(null, { status: 204 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Delete failed" }, { status: 400 });
   }
 }

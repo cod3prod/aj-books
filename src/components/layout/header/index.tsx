@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaChevronDown } from "react-icons/fa";
+// import { FaChevronDown } from "react-icons/fa";
 
 const navItems = [
   {

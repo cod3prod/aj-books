@@ -29,7 +29,7 @@ export default function Page() {
       localStorage.setItem("user", JSON.stringify(data.user));
       router.push("/");
     }
-  }, [data]);
+  }, [data, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

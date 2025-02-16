@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 export default function Books() {
   const dispatch = useDispatch<AppDispatch>();
-  const { books, status, error, currentPage } = useSelector(
+  const { books, error, currentPage } = useSelector(
     (state: RootState) => state.book
   );
 
