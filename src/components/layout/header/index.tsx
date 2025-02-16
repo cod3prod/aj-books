@@ -1,20 +1,9 @@
-import Link from "next/link";
-// import { FaChevronDown } from "react-icons/fa";
+"use client";
 
-const navItems = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "New",
-    path: "/add",
-  },
-  {
-    name: "Admin",
-    path: "/admin",
-  },
-];
+import Link from "next/link";
+import PCNav from "./pc-nav";
+import MobileNav from "./mobile-nav";
+import AuthHandler from "./auth-handler";
 
 export default function Header() {
   return (
@@ -27,25 +16,11 @@ export default function Header() {
           >
             AJ Books
           </Link>
-
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.path}
-                className="w-14 text-center text-slate-600 hover:text-blue-600 transition-all duration-300 font-medium relative group"
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            ))}
-          </nav>
-{/* 
-          <div className="hidden md:flex items-center space-x-4">
-            <button className="md:hidden text-slate-600 hover:text-blue-600 transition-colors duration-500 cursor-pointer">
-              <FaChevronDown className="w-6 h-6" />
-            </button>
-          </div> */}
+          <div className="hidden md:flex gap-2">
+            <PCNav />
+            <AuthHandler />
+          </div>
+          <MobileNav />
         </div>
       </div>
     </header>
