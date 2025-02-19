@@ -1,4 +1,4 @@
-# [AJ BOOKS]
+# AJ BOOKS
 
 **Prisma를 활용한 온라인 서점 웹 애플리케이션**
 
