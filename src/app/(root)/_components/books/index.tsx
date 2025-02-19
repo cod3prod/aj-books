@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagination from "./pagination";
 import BookItem from "./book-item";
 import { toast } from "react-toastify";
+import BookSkeleton from "./book-skeleton";
+import { Book } from "@prisma/client";
 
 export default function Books() {
   const dispatch = useDispatch<AppDispatch>();
-  const { books, error, currentPage } = useSelector(
+  const { books, error, status, currentPage } = useSelector(
     (state: RootState) => state.book
   );
 
@@ -44,7 +46,8 @@ export default function Books() {
         <Pagination />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {books.map((book) => (
+          {(status !== "succeeded") && <BookSkeleton />}
+          {books.map((book: Book) => (
             <BookItem key={book.id} book={book} />
           ))}
         </div>

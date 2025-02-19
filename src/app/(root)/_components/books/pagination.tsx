@@ -37,7 +37,7 @@ export default function Pagination() {
         <p>&lt;</p>
       </button>
 
-      <span className="px-4 py-2 bg-white rounded-full shadow-md font-medium">
+      <span className="flex-shrink-0 px-4 py-2 bg-white rounded-full shadow-md font-medium">
         {currentPage} / {totalPages}
       </span>
 
